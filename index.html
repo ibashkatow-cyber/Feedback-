@@ -242,20 +242,20 @@
 <div class="landing" id="landing">
   <div class="logo-area">
     <div class="logo-icon">☕</div>
-    <h1>Нам важно ваше мнение</h1>
-    <p>Мы делаем мебель для кофеен и хотим стать лучше. Буквально пара минут — и вы очень нам поможете 🤝</p>
+    <h1>Привет! Есть минутка?</h1>
+    <p>Мы делаем мебель для кофеен и хотим становиться круче. Расскажите, как вам с нами — это реально поможет 🤝</p>
   </div>
   <div class="cards-row">
     <div class="survey-card card-completed" onclick="showSurvey('completed')">
       <span class="card-emoji">✅</span>
       <div class="card-title">Мы делали вам проект</div>
-      <div class="card-desc">Расскажите, как всё прошло — что зашло, а что можно улучшить</div>
+      <div class="card-desc">Расскажите, как всё прошло — что зашло, а что можно подтянуть</div>
       <div class="card-arrow">Начать →</div>
     </div>
     <div class="survey-card card-lost" onclick="showSurvey('lost')">
       <span class="card-emoji">🤔</span>
       <div class="card-title">Мы общались, но вы выбрали других</div>
-      <div class="card-desc">Без обид — просто хотим понять, что пошло не так</div>
+      <div class="card-desc">Ноу обид — просто хотим понять, что пошло не так</div>
       <div class="card-arrow">Рассказать →</div>
     </div>
   </div>
@@ -265,8 +265,8 @@
 <div class="survey-container" id="survey-completed">
   <button class="back-btn" onclick="goBack()">← Назад</button>
   <div class="survey-header">
-    <h2>Спасибо, что работали с нами! ✨</h2>
-    <p>Расскажите честно — нам важно всё: и хорошее, и не очень</p>
+    <h2>Кайф, что поработали вместе! ✨</h2>
+    <p>Расскажите как есть — нам важно всё: и плюшки, и косяки</p>
   </div>
 
   <form id="form-completed"
@@ -288,16 +288,16 @@
 
     <div class="q-block">
       <label class="q-label">Как вас зовут?</label>
-      <input class="q-input" name="name" placeholder="Имя или как к вам обращаться" required>
+      <input class="q-input" name="name" placeholder="Имя — как удобно" required>
     </div>
 
     <div class="q-block">
-      <label class="q-label">Название заведения / компании</label>
-      <input class="q-input" name="company" placeholder="Например, «Кофе и Точка»">
+      <label class="q-label">Откуда вы?</label>
+      <input class="q-input" name="company" placeholder="Дринкит, Москва">
     </div>
 
     <div class="q-block">
-      <label class="q-label">Как в целом впечатление от работы с нами?</label>
+      <label class="q-label">Как вам в целом с нами работалось?</label>
       <div class="rating-row" data-target="c-overall_rating">
         <button type="button" class="rating-btn" data-value="1">1</button>
         <button type="button" class="rating-btn" data-value="2">2</button>
@@ -311,22 +311,22 @@
     <div class="q-block">
       <label class="q-label">Что понравилось больше всего?</label>
       <div class="chips-row" data-target="c-liked" data-multi="true">
-        <button type="button" class="chip" data-value="Дизайн">🎨 Дизайн</button>
         <button type="button" class="chip" data-value="Качество">💪 Качество</button>
         <button type="button" class="chip" data-value="Сроки">⏰ Сроки</button>
         <button type="button" class="chip" data-value="Общение">💬 Общение</button>
         <button type="button" class="chip" data-value="Цена">💰 Цена</button>
         <button type="button" class="chip" data-value="Монтаж">🔧 Монтаж</button>
+        <button type="button" class="chip" data-value="Другое">🤷 Другое</button>
       </div>
     </div>
 
     <div class="q-block">
-      <label class="q-label">А что можно было бы сделать лучше?</label>
-      <textarea class="q-input" name="improve" placeholder="Честно — мы не обидимся 😄"></textarea>
+      <label class="q-label">А что бы мы могли сделать круче?</label>
+      <textarea class="q-input" name="improve" placeholder="Чем честнее — тем полезнее 😄"></textarea>
     </div>
 
     <div class="q-block">
-      <label class="q-label">Порекомендовали бы нас друзьям/коллегам?</label>
+      <label class="q-label">Посоветовали бы нас своим?</label>
       <div class="nps-row" data-target="c-nps">
         <button type="button" class="nps-btn" data-value="1">1</button>
         <button type="button" class="nps-btn" data-value="2">2</button>
@@ -343,8 +343,8 @@
     </div>
 
     <div class="q-block">
-      <label class="q-label">Что-нибудь ещё хотите сказать? 😊</label>
-      <textarea class="q-input" name="extra" placeholder="Любые мысли, пожелания, идеи..."></textarea>
+      <label class="q-label">Может, ещё что-то на душе? 😊</label>
+      <textarea class="q-input" name="extra" placeholder="Пишите что угодно — мы всё читаем"></textarea>
     </div>
 
     <button type="submit" class="submit-btn submit-completed">Отправить 🚀</button>
@@ -355,8 +355,8 @@
 <div class="survey-container" id="survey-lost">
   <button class="back-btn" onclick="goBack()">← Назад</button>
   <div class="survey-header">
-    <h2>Спасибо, что уделите минутку 🙏</h2>
-    <p>Нам правда важно понять — без обид и осуждения. Это поможет нам стать лучше.</p>
+    <h2>Спасибо, что нашли минутку 🙏</h2>
+    <p>Нам реально важно понять, что произошло — это поможет нам стать лучше.</p>
   </div>
 
   <form id="form-lost"
@@ -378,16 +378,16 @@
 
     <div class="q-block">
       <label class="q-label">Как вас зовут?</label>
-      <input class="q-input" name="name" placeholder="Имя или как к вам обращаться" required>
+      <input class="q-input" name="name" placeholder="Имя — как удобно" required>
     </div>
 
     <div class="q-block">
-      <label class="q-label">Название заведения / компании</label>
-      <input class="q-input" name="company" placeholder="Например, «Кофе и Точка»">
+      <label class="q-label">Откуда вы?</label>
+      <input class="q-input" name="company" placeholder="Дринкит, Москва">
     </div>
 
     <div class="q-block">
-      <label class="q-label">Что стало решающим фактором при выборе?</label>
+      <label class="q-label">Что в итоге стало решающим?</label>
       <div class="chips-row" data-target="l-reason" data-multi="true">
         <button type="button" class="chip" data-value="Цена">💰 Цена</button>
         <button type="button" class="chip" data-value="Сроки">⏰ Сроки</button>
@@ -399,7 +399,7 @@
     </div>
 
     <div class="q-block">
-      <label class="q-label">Насколько наше предложение было близко к тому, что вы искали?</label>
+      <label class="q-label">Наше предложение вообще попало в цель?</label>
       <div class="rating-row" data-target="l-closeness">
         <button type="button" class="rating-btn" data-value="1">1</button>
         <button type="button" class="rating-btn" data-value="2">2</button>
@@ -411,12 +411,12 @@
     </div>
 
     <div class="q-block">
-      <label class="q-label">Что нам стоило сделать иначе, чтобы вы выбрали нас?</label>
-      <textarea class="q-input" name="what_different" placeholder="Может, была мелочь, которая всё решила?"></textarea>
+      <label class="q-label">Что бы нам стоило сделать по-другому?</label>
+      <textarea class="q-input" name="what_different" placeholder="Может, была какая-то мелочь, которая всё решила?"></textarea>
     </div>
 
     <div class="q-block">
-      <label class="q-label">Как вам было общаться с нами?</label>
+      <label class="q-label">Как вам общение с нами?</label>
       <div class="rating-row" data-target="l-communication">
         <button type="button" class="rating-btn" data-value="1">1</button>
         <button type="button" class="rating-btn" data-value="2">2</button>
@@ -428,7 +428,7 @@
     </div>
 
     <div class="q-block">
-      <label class="q-label">Рассмотрели бы нас в будущем?</label>
+      <label class="q-label">Ещё дадите нам шанс? 😅</label>
       <div class="chips-row" data-target="l-future" data-multi="false">
         <button type="button" class="chip" data-value="Да, конечно">👍 Да, конечно</button>
         <button type="button" class="chip" data-value="Возможно">🤔 Возможно</button>
@@ -437,8 +437,8 @@
     </div>
 
     <div class="q-block">
-      <label class="q-label">Хотите что-то добавить? 😊</label>
-      <textarea class="q-input" name="extra" placeholder="Любые мысли — нам всё пригодится"></textarea>
+      <label class="q-label">Может, ещё что-то на душе? 😊</label>
+      <textarea class="q-input" name="extra" placeholder="Пишите что угодно — мы всё читаем"></textarea>
     </div>
 
     <button type="submit" class="submit-btn submit-lost">Отправить 🚀</button>
@@ -448,8 +448,8 @@
 <!-- ===== THANK YOU ===== -->
 <div class="thank-you" id="thank-you">
   <div class="ty-emoji">🎉</div>
-  <h2>Спасибо огромное!</h2>
-  <p>Ваш ответ помогает нам становиться лучше. Ценим ваше время и честность ❤️</p>
+  <h2>Вы — огонь! 🔥</h2>
+  <p>Спасибо за честность — это реально помогает нам расти. Ценим! ❤️</p>
 </div>
 
 <script>
