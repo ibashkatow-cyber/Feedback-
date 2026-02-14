@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Обратная связь</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --warm: #F7F3EE;
+    --cream: #FFF9F2;
+    --espresso: #3C2A1E;
+    --espresso-light: #5C4033;
+    --caramel: #D4934A;
+    --caramel-light: #E8B87A;
+    --sage: #8BA888;
+    --sage-light: #B5D1B2;
+    --blush: #E8C4B8;
+    --terracotta: #C4785B;
+    --shadow: rgba(60, 42, 30, 0.08);
+    --shadow-md: rgba(60, 42, 30, 0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--warm);
+    color: var(--espresso);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  #hidden-iframe { display: none; }
+
+  .landing {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    position: relative;
+  }
+
+  .landing::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -80px;
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, var(--caramel-light) 0%, transparent 70%);
+    opacity: 0.3; border-radius: 50%; pointer-events: none;
+  }
+
+  .landing::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -60px;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, var(--sage-light) 0%, transparent 70%);
+    opacity: 0.25; border-radius: 50%; pointer-events: none;
+  }
+
+  .logo-area { text-align: center; margin-bottom: 48px; animation: fadeUp 0.8s ease; }
+
+  .logo-icon {
+    width: 64px; height: 64px;
+    background: var(--espresso); border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px; font-size: 28px;
+    transform: rotate(-3deg);
+    box-shadow: 0 8px 24px var(--shadow-md);
+  }
+
+  .logo-area h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px; font-weight: 700; margin-bottom: 8px;
+  }
+
+  .logo-area p {
+    font-size: 17px; color: var(--espresso-light);
+    opacity: 0.75; max-width: 420px; line-height: 1.6;
+  }
+
+  .cards-row {
+    display: flex; gap: 24px; max-width: 720px; width: 100%;
+    animation: fadeUp 0.8s ease 0.15s both;
+  }
+
+  .survey-card {
+    flex: 1; background: var(--cream); border-radius: 24px;
+    padding: 36px 28px; cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border: 2px solid transparent; position: relative; overflow: hidden;
+    box-shadow: 0 4px 20px var(--shadow);
+  }
+
+  .survey-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 4px; border-radius: 24px 24px 0 0; transition: height 0.3s ease;
+  }
+
+  .card-completed::before { background: var(--sage); }
+  .card-lost::before { background: var(--caramel); }
+
+  .survey-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px var(--shadow-md); }
+  .card-completed:hover { border-color: var(--sage); }
+  .card-lost:hover { border-color: var(--caramel); }
+  .survey-card:hover::before { height: 6px; }
+
+  .card-emoji { font-size: 42px; margin-bottom: 16px; display: block; }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 21px; font-weight: 700; margin-bottom: 10px;
+  }
+
+  .card-desc { font-size: 15px; line-height: 1.6; color: var(--espresso-light); opacity: 0.8; }
+
+  .card-arrow {
+    margin-top: 20px; display: inline-flex; align-items: center; gap: 6px;
+    font-weight: 700; font-size: 14px; letter-spacing: 0.5px;
+    text-transform: uppercase; transition: gap 0.3s ease;
+  }
+
+  .card-completed .card-arrow { color: var(--sage); }
+  .card-lost .card-arrow { color: var(--caramel); }
+  .survey-card:hover .card-arrow { gap: 12px; }
+
+  .survey-container {
+    display: none; max-width: 620px; margin: 0 auto;
+    padding: 40px 20px 80px; animation: fadeUp 0.6s ease;
+  }
+  .survey-container.active { display: block; }
+
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 600;
+    color: var(--espresso-light); background: none; border: none;
+    cursor: pointer; margin-bottom: 32px; padding: 8px 0;
+    opacity: 0.7; transition: opacity 0.2s, gap 0.2s;
+  }
+  .back-btn:hover { opacity: 1; gap: 12px; }
+
+  .survey-header { margin-bottom: 40px; }
+  .survey-header h2 { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  .survey-header p { font-size: 16px; color: var(--espresso-light); opacity: 0.75; line-height: 1.5; }
+
+  .q-block { margin-bottom: 32px; animation: fadeUp 0.5s ease both; }
+  .q-block:nth-child(n+2) { animation-delay: calc(0.05s * var(--i, 0)); }
+
+  .q-label { font-size: 16px; font-weight: 700; margin-bottom: 10px; display: block; line-height: 1.5; }
+
+  .q-input {
+    width: 100%; padding: 14px 18px;
+    border: 2px solid rgba(60, 42, 30, 0.1); border-radius: 14px;
+    font-family: 'Nunito', sans-serif; font-size: 15px;
+    background: var(--cream); color: var(--espresso);
+    transition: border-color 0.25s, box-shadow 0.25s; outline: none;
+  }
+  .q-input:focus { border-color: var(--caramel); box-shadow: 0 0 0 4px rgba(212, 147, 74, 0.12); }
+  .q-input::placeholder { color: var(--espresso-light); opacity: 0.4; }
+  textarea.q-input { min-height: 100px; resize: vertical; }
+
+  .rating-row { display: flex; gap: 8px; }
+  .rating-btn {
+    width: 52px; height: 52px; border-radius: 14px;
+    border: 2px solid rgba(60, 42, 30, 0.1); background: var(--cream);
+    font-size: 20px; cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Nunito', sans-serif; font-weight: 700; color: var(--espresso-light);
+  }
+  .rating-btn:hover { border-color: var(--caramel); transform: translateY(-2px); }
+  .rating-btn.selected {
+    background: var(--caramel); border-color: var(--caramel); color: white;
+    transform: scale(1.05); box-shadow: 0 4px 12px rgba(212, 147, 74, 0.3);
+  }
+
+  .chips-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip {
+    padding: 10px 18px; border-radius: 100px;
+    border: 2px solid rgba(60, 42, 30, 0.1); background: var(--cream);
+    font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s; color: var(--espresso);
+  }
+  .chip:hover { border-color: var(--caramel-light); background: rgba(212, 147, 74, 0.08); }
+  .chip.selected { background: var(--caramel); border-color: var(--caramel); color: white; }
+
+  .nps-row { display: flex; gap: 6px; }
+  .nps-btn {
+    flex: 1; height: 46px; border-radius: 12px;
+    border: 2px solid rgba(60, 42, 30, 0.08); background: var(--cream);
+    font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+    font-family: 'Nunito', sans-serif; color: var(--espresso-light);
+  }
+  .nps-btn:hover { border-color: var(--caramel); transform: translateY(-2px); }
+  .nps-btn.selected { color: white; transform: scale(1.05); box-shadow: 0 3px 10px var(--shadow-md); }
+  .nps-btn.selected.low { background: var(--terracotta); border-color: var(--terracotta); }
+  .nps-btn.selected.mid { background: var(--caramel); border-color: var(--caramel); }
+  .nps-btn.selected.high { background: var(--sage); border-color: var(--sage); }
+
+  .nps-labels {
+    display: flex; justify-content: space-between;
+    font-size: 12px; color: var(--espresso-light); opacity: 0.5;
+    margin-top: 6px; padding: 0 4px;
+  }
+
+  .submit-btn {
+    width: 100%; padding: 18px; border: none; border-radius: 16px;
+    font-family: 'Nunito', sans-serif; font-size: 17px; font-weight: 800;
+    cursor: pointer; transition: all 0.3s; margin-top: 16px; letter-spacing: 0.3px;
+  }
+  .submit-completed { background: var(--sage); color: white; box-shadow: 0 6px 24px rgba(139, 168, 136, 0.3); }
+  .submit-completed:hover { background: #7A9A77; transform: translateY(-2px); }
+  .submit-lost { background: var(--caramel); color: white; box-shadow: 0 6px 24px rgba(212, 147, 74, 0.3); }
+  .submit-lost:hover { background: #C4853A; transform: translateY(-2px); }
+
+  .thank-you { display: none; text-align: center; padding: 120px 20px; animation: fadeUp 0.6s ease; }
+  .thank-you.active { display: block; }
+  .thank-you .ty-emoji { font-size: 64px; margin-bottom: 24px; animation: bounce 0.6s ease 0.3s both; }
+  .thank-you h2 { font-family: 'Playfair Display', serif; font-size: 28px; margin-bottom: 12px; }
+  .thank-you p { font-size: 16px; color: var(--espresso-light); opacity: 0.7; max-width: 380px; margin: 0 auto; line-height: 1.6; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes bounce { 0% { transform: scale(0); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+
+  @media (max-width: 640px) {
+    .cards-row { flex-direction: column; }
+    .logo-area h1 { font-size: 26px; }
+    .survey-header h2 { font-size: 24px; }
+    .nps-row { flex-wrap: wrap; }
+    .nps-btn { flex: 0 0 calc(20% - 5px); }
+    .rating-btn { width: 46px; height: 46px; }
+  }
+</style>
+</head>
+<body>
+
+<iframe name="hidden-iframe" id="hidden-iframe"></iframe>
+
+<!-- ===== LANDING ===== -->
+<div class="landing" id="landing">
+  <div class="logo-area">
+    <div class="logo-icon">☕</div>
+    <h1>Нам важно ваше мнение</h1>
+    <p>Мы делаем мебель для кофеен и хотим стать лучше. Буквально пара минут — и вы очень нам поможете 🤝</p>
+  </div>
+  <div class="cards-row">
+    <div class="survey-card card-completed" onclick="showSurvey('completed')">
+      <span class="card-emoji">✅</span>
+      <div class="card-title">Мы делали вам проект</div>
+      <div class="card-desc">Расскажите, как всё прошло — что зашло, а что можно улучшить</div>
+      <div class="card-arrow">Начать →</div>
+    </div>
+    <div class="survey-card card-lost" onclick="showSurvey('lost')">
+      <span class="card-emoji">🤔</span>
+      <div class="card-title">Мы общались, но вы выбрали других</div>
+      <div class="card-desc">Без обид — просто хотим понять, что пошло не так</div>
+      <div class="card-arrow">Рассказать →</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SURVEY: COMPLETED PROJECT ===== -->
+<div class="survey-container" id="survey-completed">
+  <button class="back-btn" onclick="goBack()">← Назад</button>
+  <div class="survey-header">
+    <h2>Спасибо, что работали с нами! ✨</h2>
+    <p>Расскажите честно — нам важно всё: и хорошее, и не очень</p>
+  </div>
+
+  <form id="form-completed"
+        action="https://script.google.com/macros/s/AKfycbz1l_Yf1udnEoNnZeeuxt-9ErKhmH1jXQLnfjXzS-t2ABQhU_ZZ59-43yhvMGG3qWAt/exec"
+        method="POST"
+        target="hidden-iframe"
+        onsubmit="return handleSubmit('completed')">
+
+    <input type="hidden" name="timestamp" id="c-timestamp">
+    <input type="hidden" name="survey_type" value="Завершённый проект">
+    <input type="hidden" name="overall_rating" id="c-overall_rating" value="">
+    <input type="hidden" name="liked" id="c-liked" value="">
+    <input type="hidden" name="nps" id="c-nps" value="">
+    <input type="hidden" name="reason" value="">
+    <input type="hidden" name="closeness" value="">
+    <input type="hidden" name="what_different" value="">
+    <input type="hidden" name="communication" value="">
+    <input type="hidden" name="future" value="">
+
+    <div class="q-block">
+      <label class="q-label">Как вас зовут?</label>
+      <input class="q-input" name="name" placeholder="Имя или как к вам обращаться" required>
+    </div>
+
+    <div class="q-block">
+      <label class="q-label">Название заведения / компании</label>
+      <input class="q-input" name="company" placeholder="Например, «Кофе и Точка»">
+    </div>
+
+    <div class="q-block">
+      <label class="q-label">Как в целом впечатление от работы с нами?</label>
+      <div class="rating-row" data-target="c-overall_rating">
+        <button type="button" class="rating-btn" data-value="1">1</button>
+        <button type="button" class="rating-btn" data-value="2">2</button>
+        <button type="button" class="rating-btn" data-value="3">3</button>
+        <button type="button" class="rating-btn" data-value="4">4</button>
+        <button type="button" class="rating-btn" data-value="5">5</button>
+      </div>
+      <div class="nps-labels"><span>Так себе</span><span>Супер!</span></div>
+    </div>
+
+    <div class="q-block">
+      <label class="q-label">Что понравилось больше всего?</label>
+      <div class="chips-row" data-target="c-liked" data-multi="true">
+        <button type="button" class="chip" data-value="Дизайн">🎨 Дизайн</button>
+        <button type="button" class="chip" data-value="Качество">💪 Качество</button>
+        <button type="button" class="chip" data-value="Сроки">⏰ Сроки</button>
+        <button type="button" class="chip" data-value="Общение">💬 Общение</button>
+        <button type="button" class="chip" data-value="Цена">💰 Цена</button>
+        <button type="button" class="chip" data-value="Монтаж">🔧 Монтаж</button>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <label class="q-label">А что можно было бы сделать лучше?</label>
+      <textarea class="q-input" name="improve" placeholder="Честно — мы не обидимся 😄"></textarea>
+    </div>
+
+    <div class="q-block">
+      <label class="q-label">Порекомендовали бы нас друзьям/коллегам?</label>
+      <div class="nps-row" data-target="c-nps">
+        <button type="button" class="nps-btn" data-value="1">1</button>
+        <button type="button" class="nps-btn" data-value="2">2</button>
+        <button type="button" class="nps-btn" data-value="3">3</button>
+        <button type="button" class="nps-btn" data-value="4">4</button>
+        <button type="button" class="nps-btn" data-value="5">5</button>
+        <button type="button" class="nps-btn" data-value="6">6</button>
+        <button type="button" class="nps-btn" data-value="7">7</button>
+        <button type="button" class="nps-btn" data-value="8">8</button>
+        <button type="button" class="nps-btn" data-value="9">9</button>
+        <button type="button" class="nps-btn" data-value="10">10</button>
+      </div>
+      <div class="nps-labels"><span>Точно нет</span><span>Однозначно да!</span></div>
+    </div>
+
+    <div class="q-block">
+      <label class="q-label">Что-нибудь ещё хотите сказать? 😊</label>
+      <textarea class="q-input" name="extra" placeholder="Любые мысли, пожелания, идеи..."></textarea>
+    </div>
+
+    <button type="submit" class="submit-btn submit-completed">Отправить 🚀</button>
+  </form>
+</div>
+
+<!-- ===== SURVEY: LOST DEAL ===== -->
+<div class="survey-container" id="survey-lost">
+  <button class="back-btn" onclick="goBack()">← Назад</button>
+  <div class="survey-header">
+    <h2>Спасибо, что уделите минутку 🙏</h2>
+    <p>Нам правда важно понять — без обид и осуждения. Это поможет нам стать лучше.</p>
+  </div>
+
+  <form id="form-lost"
+        action="https://script.google.com/macros/s/AKfycbz1l_Yf1udnEoNnZeeuxt-9ErKhmH1jXQLnfjXzS-t2ABQhU_ZZ59-43yhvMGG3qWAt/exec"
+        method="POST"
+        target="hidden-iframe"
+        onsubmit="return handleSubmit('lost')">
+
+    <input type="hidden" name="timestamp" id="l-timestamp">
+    <input type="hidden" name="survey_type" value="Выбрали других">
+    <input type="hidden" name="overall_rating" value="">
+    <input type="hidden" name="liked" value="">
+    <input type="hidden" name="improve" value="">
+    <input type="hidden" name="nps" value="">
+    <input type="hidden" name="reason" id="l-reason" value="">
+    <input type="hidden" name="closeness" id="l-closeness" value="">
+    <input type="hidden" name="communication" id="l-communication" value="">
+    <input type="hidden" name="future" id="l-future" value="">
+
+    <div class="q-block">
+      <label class="q-label">Как вас зовут?</label>
+      <input class="q-input" name="name" placeholder="Имя или как к вам обращаться" required>
+    </div>
+
+    <div class="q-block">
+      <label class="q-label">Название заведения / компании</label>
+      <input class="q-input" name="company" placeholder="Например, «Кофе и Точка»">
+    </div>
+
+    <div class="q-block">
+      <label class="q-label">Что стало решающим фактором при выборе?</label>
+      <div class="chips-row" data-target="l-reason" data-multi="true">
+        <button type="button" class="chip" data-value="Цена">💰 Цена</button>
+        <button type="button" class="chip" data-value="Сроки">⏰ Сроки</button>
+        <button type="button" class="chip" data-value="Дизайн">🎨 Дизайн</button>
+        <button type="button" class="chip" data-value="Рекомендации">👥 Рекомендации</button>
+        <button type="button" class="chip" data-value="Условия">📋 Условия</button>
+        <button type="button" class="chip" data-value="Другое">🤷 Другое</button>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <label class="q-label">Насколько наше предложение было близко к тому, что вы искали?</label>
+      <div class="rating-row" data-target="l-closeness">
+        <button type="button" class="rating-btn" data-value="1">1</button>
+        <button type="button" class="rating-btn" data-value="2">2</button>
+        <button type="button" class="rating-btn" data-value="3">3</button>
+        <button type="button" class="rating-btn" data-value="4">4</button>
+        <button type="button" class="rating-btn" data-value="5">5</button>
+      </div>
+      <div class="nps-labels"><span>Совсем мимо</span><span>Почти то, что надо</span></div>
+    </div>
+
+    <div class="q-block">
+      <label class="q-label">Что нам стоило сделать иначе, чтобы вы выбрали нас?</label>
+      <textarea class="q-input" name="what_different" placeholder="Может, была мелочь, которая всё решила?"></textarea>
+    </div>
+
+    <div class="q-block">
+      <label class="q-label">Как вам было общаться с нами?</label>
+      <div class="rating-row" data-target="l-communication">
+        <button type="button" class="rating-btn" data-value="1">1</button>
+        <button type="button" class="rating-btn" data-value="2">2</button>
+        <button type="button" class="rating-btn" data-value="3">3</button>
+        <button type="button" class="rating-btn" data-value="4">4</button>
+        <button type="button" class="rating-btn" data-value="5">5</button>
+      </div>
+      <div class="nps-labels"><span>Некомфортно</span><span>Отлично</span></div>
+    </div>
+
+    <div class="q-block">
+      <label class="q-label">Рассмотрели бы нас в будущем?</label>
+      <div class="chips-row" data-target="l-future" data-multi="false">
+        <button type="button" class="chip" data-value="Да, конечно">👍 Да, конечно</button>
+        <button type="button" class="chip" data-value="Возможно">🤔 Возможно</button>
+        <button type="button" class="chip" data-value="Вряд ли">👋 Вряд ли</button>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <label class="q-label">Хотите что-то добавить? 😊</label>
+      <textarea class="q-input" name="extra" placeholder="Любые мысли — нам всё пригодится"></textarea>
+    </div>
+
+    <button type="submit" class="submit-btn submit-lost">Отправить 🚀</button>
+  </form>
+</div>
+
+<!-- ===== THANK YOU ===== -->
+<div class="thank-you" id="thank-you">
+  <div class="ty-emoji">🎉</div>
+  <h2>Спасибо огромное!</h2>
+  <p>Ваш ответ помогает нам становиться лучше. Ценим ваше время и честность ❤️</p>
+</div>
+
+<script>
+  function showSurvey(type) {
+    document.getElementById('landing').style.display = 'none';
+    document.getElementById('survey-' + type).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goBack() {
+    document.querySelectorAll('.survey-container').forEach(function(el) { el.classList.remove('active'); });
+    document.getElementById('landing').style.display = 'flex';
+  }
+
+  // Rating buttons
+  document.querySelectorAll('.rating-row').forEach(function(row) {
+    var targetId = row.getAttribute('data-target');
+    row.querySelectorAll('.rating-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        row.querySelectorAll('.rating-btn').forEach(function(b) { b.classList.remove('selected'); });
+        btn.classList.add('selected');
+        if (targetId) document.getElementById(targetId).value = btn.getAttribute('data-value');
+      });
+    });
+  });
+
+  // Chips
+  document.querySelectorAll('.chips-row').forEach(function(row) {
+    var targetId = row.getAttribute('data-target');
+    var isMulti = row.getAttribute('data-multi') === 'true';
+
+    row.querySelectorAll('.chip').forEach(function(chip) {
+      chip.addEventListener('click', function() {
+        if (isMulti) {
+          chip.classList.toggle('selected');
+        } else {
+          row.querySelectorAll('.chip').forEach(function(c) { c.classList.remove('selected'); });
+          chip.classList.add('selected');
+        }
+        if (targetId) {
+          var selected = row.querySelectorAll('.chip.selected');
+          var values = [];
+          selected.forEach(function(c) { values.push(c.getAttribute('data-value')); });
+          document.getElementById(targetId).value = values.join(', ');
+        }
+      });
+    });
+  });
+
+  // NPS
+  document.querySelectorAll('.nps-row').forEach(function(row) {
+    var targetId = row.getAttribute('data-target');
+    row.querySelectorAll('.nps-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        row.querySelectorAll('.nps-btn').forEach(function(b) {
+          b.classList.remove('selected', 'low', 'mid', 'high');
+        });
+        var val = parseInt(btn.getAttribute('data-value'));
+        btn.classList.add('selected');
+        if (val <= 6) btn.classList.add('low');
+        else if (val <= 8) btn.classList.add('mid');
+        else btn.classList.add('high');
+        if (targetId) document.getElementById(targetId).value = btn.getAttribute('data-value');
+      });
+    });
+  });
+
+  // Submit
+  function handleSubmit(type) {
+    var prefix = type === 'completed' ? 'c' : 'l';
+    document.getElementById(prefix + '-timestamp').value = new Date().toISOString();
+
+    var form = document.getElementById('form-' + type);
+    var formData = new FormData(form);
+    var url = form.getAttribute('action');
+    var params = new URLSearchParams(formData).toString();
+
+    // Method 1: fetch POST
+    fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params
+    });
+
+    // Method 2: GET via Image (backup)
+    var img = new Image();
+    img.src = url + '?' + params;
+
+    setTimeout(function() {
+      document.querySelectorAll('.survey-container').forEach(function(el) { el.classList.remove('active'); });
+      document.getElementById('thank-you').classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 2000);
+
+    return false;
+  }
+</script>
+
+</body>
+</html>
